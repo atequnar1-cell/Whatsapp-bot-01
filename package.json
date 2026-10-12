@@ -8,4 +8,34 @@
   "dependencies": {
     "express": "^4.18.2"
   }
-}
+}const express = require('express');
+const app = express();
+
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('<h1>WhatsApp Bot is Live! 🤖</h1><p>AFTEAM00 Auto-Reply Bot is Ready! ✅</p><p>Test: /auto-reply?message=hi</p>');
+});
+
+app.post('/auto-reply', (req, res) => {
+  const userMessage = (req.body.message || '').toLowerCase();
+  let reply = '';
+  if (userMessage.includes('hi') || userMessage.includes('salam') || userMessage.includes('hello')) {
+    reply = 'Assalam-o-Alaikum! 👋 Welcome to AFTEAM00! Services: 1. WhatsApp Bot 2. Web Dev. Kis me help chahiye?';
+  } else if (userMessage.includes('price') || userMessage.includes('rate')) {
+    reply = '💰 AFTEAM00 Packages: Basic Bot - 3000 PKR, Pro Bot - 5000 PKR, 24/7 FREE ✅';
+  } else {
+    reply = 'Thanks for messaging AFTEAM00! 🙏 Team jald rabta karegi.';
+  }
+  res.json({ autoReply: reply });
+});
+
+app.get('/auto-reply', (req, res) => {
+  const msg = (req.query.message || '').toLowerCase();
+  let reply = 'Thanks for messaging AFTEAM00! 🙏';
+  if (msg.includes('hi') || msg.includes('salam')) reply = 'Walaikum Salam! AFTEAM00 me Khush Amdeed! 👋';
+  if (msg.includes('price')) reply = 'Basic Bot 3000 PKR, Pro Bot 5000 PKR 💰';
+  res.json({ yourMessage: msg, autoReply: reply });
+});
+
+module.exports = app;
